@@ -53,6 +53,44 @@ public class Main {
             session.close();
         }
     }
+    
+/* Method to UPDATE salary for an employee */
+    public static void updateEmployee(Integer EmployeeID, int salary) {
+	Session session = factory.openSession();
+	Transaction tx = null;
+
+	try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee) session.get(Employee.class, EmployeeID);
+            employee.setSalary(salary);
+            session.update(employee);
+            tx.commit();
+	} catch (HibernateException e) {
+            if (tx != null)tx.rollback();
+		e.printStackTrace();
+	} finally {
+            session.close();
+	}
+    }
+
+	/* Method to DELETE an employee from the records */
+	public static void deleteEmployee(Integer EmployeeID) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+
+		try {
+			tx = session.beginTransaction();
+			Employee employee = (Employee) session.get(Employee.class, EmployeeID);
+			session.delete(employee);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
 
 //main==========================================================================
     public static void main (String args[]){
